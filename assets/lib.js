@@ -62,6 +62,26 @@ window.Lib = (() => {
     return `https://www.youtube-nocookie.com/embed/${id}?autoplay=1`;
   }
 
+  function generateVideosJsSource(videos) {
+    if (videos.length === 0) return 'window.VIDEOS = [];\n';
+    const lines = videos.map(video => {
+      const id = JSON.stringify(video.id);
+      const titulo = JSON.stringify(video.titulo);
+      const canal = JSON.stringify(video.canal);
+      const adicionado = JSON.stringify(video.adicionado);
+      return `  { id: ${id}, titulo: ${titulo}, canal: ${canal}, adicionado: ${adicionado} },`;
+    });
+    return `window.VIDEOS = [\n${lines.join('\n')}\n];\n`;
+  }
+
+  function parseVideosJsSource(sourceText) {
+    if (!sourceText || !sourceText.trim()) return [];
+    const sandbox = {};
+    const run = new Function('window', `${sourceText}\nreturn window.VIDEOS;`);
+    const result = run(sandbox);
+    return Array.isArray(result) ? result : [];
+  }
+
   return {
     extractYouTubeId,
     normalizeForSearch,
@@ -70,5 +90,7 @@ window.Lib = (() => {
     filterVideos,
     thumbnailUrl,
     embedUrl,
+    generateVideosJsSource,
+    parseVideosJsSource,
   };
 })();

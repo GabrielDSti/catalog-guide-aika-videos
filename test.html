@@ -70,6 +70,19 @@
 
       assertEqual(window.Lib.escapeHtml(`<b>&"'`), '&lt;b&gt;&amp;&quot;&#39;', 'escapeHtml: escapa caracteres especiais');
 
+      assertEqual(window.Lib.generateVideosJsSource([]), 'window.VIDEOS = [];\n', 'generateVideosJsSource: lista vazia');
+
+      const videoExemplo = [{ id: 'dQw4w9WgXcQ', titulo: 'Como comecar', canal: 'Ally Octans', adicionado: '2026-01-01' }];
+      const fonteGerada = window.Lib.generateVideosJsSource(videoExemplo);
+      assertEqual(
+        fonteGerada,
+        'window.VIDEOS = [\n  { id: "dQw4w9WgXcQ", titulo: "Como comecar", canal: "Ally Octans", adicionado: "2026-01-01" },\n];\n',
+        'generateVideosJsSource: um video'
+      );
+
+      assertEqual(window.Lib.parseVideosJsSource(''), [], 'parseVideosJsSource: string vazia retorna lista vazia');
+      assertEqual(window.Lib.parseVideosJsSource(fonteGerada), videoExemplo, 'parseVideosJsSource: ida e volta preserva os dados');
+
       // INSERIR_TESTES_AQUI
 
       document.getElementById('summary').textContent = `${pass} PASS / ${fail} FAIL`;
