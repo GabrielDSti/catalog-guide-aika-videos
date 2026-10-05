@@ -50,12 +50,12 @@
   function renderGrid(videos) {
     if (allVideos.length === 0) {
       resultCount.textContent = '';
-      grid.innerHTML = '<p class="empty-state">Nenhum vídeo cadastrado ainda. Volte em breve!</p>';
+      grid.innerHTML = '<li class="empty-state">Nenhum vídeo cadastrado ainda. Volte em breve!</li>';
       return;
     }
     if (videos.length === 0) {
       resultCount.textContent = 'Nenhum vídeo encontrado.';
-      grid.innerHTML = `<p class="empty-state">Nenhum vídeo encontrado para "${window.Lib.escapeHtml(searchInput.value)}".</p>`;
+      grid.innerHTML = `<li class="empty-state">Nenhum vídeo encontrado para "${window.Lib.escapeHtml(searchInput.value)}".</li>`;
       return;
     }
     resultCount.textContent = videos.length === 1 ? '1 vídeo encontrado' : `${videos.length} vídeos encontrados`;

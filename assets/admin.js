@@ -76,10 +76,21 @@
   });
 
   generateButton.addEventListener('click', () => {
-    const existing = window.Lib.parseVideosJsSource(existingInput.value);
+    let existing;
+    try {
+      existing = window.Lib.parseVideosJsSource(existingInput.value);
+    } catch {
+      output.value = '';
+      copyStatus.textContent = 'Não consegui ler o conteúdo colado em "Vídeos já existentes" — confira se é exatamente o conteúdo de assets/videos.js e tente de novo.';
+      return;
+    }
     const merged = existing.filter(video => !pending.some(p => p.id === video.id)).concat(pending);
     output.value = window.Lib.generateVideosJsSource(merged);
-    copyStatus.textContent = '';
+    if (existing.length === 0 && pending.length > 0) {
+      copyStatus.textContent = 'Atenção: nenhum vídeo existente foi colado — se já existem vídeos publicados, cole o conteúdo atual do passo 3 antes de gerar, ou este resultado vai conter só os novos.';
+    } else {
+      copyStatus.textContent = '';
+    }
   });
 
   copyButton.addEventListener('click', async () => {

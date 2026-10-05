@@ -136,8 +136,12 @@ a:focus-visible, button:focus-visible, input:focus-visible {
   text-align: center;
 }
 
+.video-card-item {
+  display: flex;
+}
 .video-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
   width: 100%;
   text-align: left;
   border: 1px solid #d4b47d30;
