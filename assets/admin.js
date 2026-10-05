@@ -4,6 +4,11 @@
   const linksInput = document.getElementById('links-input');
   const processButton = document.getElementById('process-links');
   const previewList = document.getElementById('preview-list');
+  const existingInput = document.getElementById('existing-videos');
+  const generateButton = document.getElementById('generate-output');
+  const output = document.getElementById('output');
+  const copyButton = document.getElementById('copy-output');
+  const copyStatus = document.getElementById('copy-status');
 
   let pending = [];
 
@@ -68,5 +73,22 @@
     const index = Number(item.dataset.index);
     if (event.target.classList.contains('field-titulo')) pending[index].titulo = event.target.value;
     if (event.target.classList.contains('field-canal')) pending[index].canal = event.target.value;
+  });
+
+  generateButton.addEventListener('click', () => {
+    const existing = window.Lib.parseVideosJsSource(existingInput.value);
+    const merged = existing.filter(video => !pending.some(p => p.id === video.id)).concat(pending);
+    output.value = window.Lib.generateVideosJsSource(merged);
+    copyStatus.textContent = '';
+  });
+
+  copyButton.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(output.value);
+      copyStatus.textContent = 'Copiado!';
+    } catch {
+      output.select();
+      copyStatus.textContent = 'Selecionado — use Ctrl+C para copiar.';
+    }
   });
 })();
