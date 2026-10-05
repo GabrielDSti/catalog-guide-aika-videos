@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080c10">
+  <meta name="description" content="Guia de Iniciantes: vídeos para começar bem em Aika Online, organizados pela comunidade Ally Octans.">
+  <title>Guia de Iniciantes — Ally Octans</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <a class="skip" href="#video-grid">Ir para os vídeos</a>
+  <div class="shell">
+    <header class="site-header">
+      <span class="brand"><img src="assets/octans-emblema.jpg" alt="" width="40" height="40"><span>GUIA DE INICIANTES<small>AIKA ONLINE · ALLY OCTANS</small></span></span>
+    </header>
+    <main class="content">
+      <section class="intro">
+        <p class="eyebrow"><span aria-hidden="true">✦</span> PARA QUEM ESTÁ COMEÇANDO</p>
+        <h1>Guia de Iniciantes</h1>
+        <p>Vídeos selecionados pela comunidade para quem está começando em Aika Online.</p>
+      </section>
+      <div class="search-bar">
+        <label for="search-input">Buscar vídeo</label>
+        <input type="search" id="search-input" placeholder="Buscar por título ou canal…" autocomplete="off">
+        <span class="result-count" id="result-count" aria-live="polite"></span>
+      </div>
+      <ul class="video-grid" id="video-grid" aria-label="Vídeos do guia"></ul>
+    </main>
+    <footer class="site-footer">
+      <span>Comunidade independente de Aika Online.</span>
+    </footer>
+  </div>
+
+  <dialog id="lightbox">
+    <button class="close-lightbox" type="button" aria-label="Fechar vídeo">×</button>
+    <div class="lightbox-video-wrap" id="lightbox-video-wrap"></div>
+    <div class="lightbox-footer">
+      <h2 id="lightbox-title"></h2>
+      <span id="lightbox-channel"></span>
+    </div>
+  </dialog>
+
+  <script src="assets/lib.js"></script>
+  <script src="assets/videos.js"></script>
+  <script src="assets/app.js"></script>
+</body>
+</html>
