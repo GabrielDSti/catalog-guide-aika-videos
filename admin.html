@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin — Guia de Iniciantes</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+  <div class="shell">
+    <header class="site-header">
+      <span class="brand"><img src="assets/octans-emblema.jpg" alt="" width="40" height="40"><span>CADASTRO DE VÍDEOS<small>FERRAMENTA LOCAL</small></span></span>
+    </header>
+    <main class="content">
+      <section class="intro">
+        <h1>Adicionar vídeos</h1>
+        <p>Cole links do YouTube, confira os títulos e gere o conteúdo para colar em <code>assets/videos.js</code>. Esta página não salva nada — só gera texto.</p>
+      </section>
+
+      <section class="admin-step">
+        <h2>1. Cole os links (um por linha)</h2>
+        <textarea id="links-input" rows="5" placeholder="https://www.youtube.com/watch?v=..."></textarea>
+        <button type="button" id="process-links">Processar links</button>
+      </section>
+
+      <section class="admin-step">
+        <h2>2. Confira e edite</h2>
+        <ul id="preview-list" class="preview-list"></ul>
+      </section>
+
+      <section class="admin-step">
+        <h2>3. Vídeos já existentes (opcional)</h2>
+        <p>Cole aqui o conteúdo atual de <code>assets/videos.js</code> para mesclar com os novos. Deixe em branco se for a primeira vez.</p>
+        <textarea id="existing-videos" rows="6" placeholder="window.VIDEOS = [...]"></textarea>
+      </section>
+
+      <section class="admin-step">
+        <h2>4. Gerar e copiar</h2>
+        <button type="button" id="generate-output">Gerar videos.js</button>
+        <textarea id="output" rows="10" readonly></textarea>
+        <button type="button" id="copy-output">Copiar</button>
+        <span id="copy-status" role="status"></span>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/lib.js"></script>
+  <script src="assets/admin.js"></script>
+</body>
+</html>
