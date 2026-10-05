@@ -44,6 +44,32 @@
       assertEqual(window.Lib.normalizeForSearch('  ESPAÇO  '), 'espaco', 'normalizeForSearch: remove espacos nas pontas');
       assertEqual(window.Lib.normalizeForSearch(undefined), '', 'normalizeForSearch: valor nao-string retorna vazio');
 
+      const videosParaOrdenar = [
+        { id: 'a', titulo: 'A', canal: 'C', adicionado: '2026-01-01' },
+        { id: 'b', titulo: 'B', canal: 'C', adicionado: '2026-03-01' },
+        { id: 'c', titulo: 'C', canal: 'C', adicionado: '2026-02-01' },
+        { id: 'd', titulo: 'D', canal: 'C', adicionado: '2026-03-01' },
+      ];
+      assertEqual(
+        window.Lib.sortVideosByDate(videosParaOrdenar).map(v => v.id),
+        ['b', 'd', 'c', 'a'],
+        'sortVideosByDate: mais recente primeiro, mantem ordem original em empate'
+      );
+
+      const videosParaFiltrar = [
+        { id: '1', titulo: 'Dungeão Final', canal: 'Ally Octans', adicionado: '2026-01-01' },
+        { id: '2', titulo: 'Guia de Classes', canal: 'Outro Canal', adicionado: '2026-01-02' },
+      ];
+      assertEqual(window.Lib.filterVideos(videosParaFiltrar, 'dungeao').map(v => v.id), ['1'], 'filterVideos: busca por titulo ignora acento/caixa');
+      assertEqual(window.Lib.filterVideos(videosParaFiltrar, 'outro canal').map(v => v.id), ['2'], 'filterVideos: busca por canal');
+      assertEqual(window.Lib.filterVideos(videosParaFiltrar, '').length, 2, 'filterVideos: busca vazia retorna todos');
+      assertEqual(window.Lib.filterVideos(videosParaFiltrar, 'inexistente').length, 0, 'filterVideos: sem resultado retorna lista vazia');
+
+      assertEqual(window.Lib.thumbnailUrl('abc123'), 'https://i.ytimg.com/vi/abc123/hqdefault.jpg', 'thumbnailUrl: monta URL da miniatura');
+      assertEqual(window.Lib.embedUrl('abc123'), 'https://www.youtube-nocookie.com/embed/abc123?autoplay=1', 'embedUrl: monta URL do player sem cookies');
+
+      assertEqual(window.Lib.escapeHtml(`<b>&"'`), '&lt;b&gt;&amp;&quot;&#39;', 'escapeHtml: escapa caracteres especiais');
+
       // INSERIR_TESTES_AQUI
 
       document.getElementById('summary').textContent = `${pass} PASS / ${fail} FAIL`;
