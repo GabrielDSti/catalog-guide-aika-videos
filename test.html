@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Testes — lib.js</title>
+  <style>
+    body { font-family: monospace; background: #111; color: #eee; padding: 20px; }
+    li.pass { color: #7ee787; }
+    li.fail { color: #ff7b72; font-weight: bold; }
+    #summary { font-size: 16px; margin-bottom: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Testes — assets/lib.js</h1>
+  <p id="summary">Executando…</p>
+  <ul id="results"></ul>
+
+  <script src="assets/lib.js"></script>
+  <script>
+    (function () {
+      'use strict';
+      let pass = 0, fail = 0;
+      const results = document.getElementById('results');
+
+      function assertEqual(actual, expected, message) {
+        const ok = JSON.stringify(actual) === JSON.stringify(expected);
+        const li = document.createElement('li');
+        li.className = ok ? 'pass' : 'fail';
+        li.textContent = (ok ? 'PASS' : 'FAIL') + ' — ' + message +
+          (ok ? '' : ` (esperado ${JSON.stringify(expected)}, recebido ${JSON.stringify(actual)})`);
+        results.appendChild(li);
+        ok ? pass++ : fail++;
+      }
+
+      assertEqual(window.Lib.extractYouTubeId('https://www.youtube.com/watch?v=dQw4w9WgXcQ'), 'dQw4w9WgXcQ', 'extractYouTubeId: link watch simples');
+      assertEqual(window.Lib.extractYouTubeId('https://www.youtube.com/watch?list=PL123&v=dQw4w9WgXcQ&t=30s'), 'dQw4w9WgXcQ', 'extractYouTubeId: link watch com parametros extras');
+      assertEqual(window.Lib.extractYouTubeId('https://youtu.be/dQw4w9WgXcQ'), 'dQw4w9WgXcQ', 'extractYouTubeId: link curto youtu.be');
+      assertEqual(window.Lib.extractYouTubeId('https://youtu.be/dQw4w9WgXcQ?t=5'), 'dQw4w9WgXcQ', 'extractYouTubeId: link curto com parametro');
+      assertEqual(window.Lib.extractYouTubeId('https://www.youtube.com/shorts/dQw4w9WgXcQ'), 'dQw4w9WgXcQ', 'extractYouTubeId: link de shorts');
+      assertEqual(window.Lib.extractYouTubeId('https://example.com/video'), null, 'extractYouTubeId: link invalido retorna null');
+      assertEqual(window.Lib.extractYouTubeId(''), null, 'extractYouTubeId: string vazia retorna null');
+
+      assertEqual(window.Lib.normalizeForSearch('Dungeão Final'), 'dungeao final', 'normalizeForSearch: remove acento e vira minusculas');
+      assertEqual(window.Lib.normalizeForSearch('  ESPAÇO  '), 'espaco', 'normalizeForSearch: remove espacos nas pontas');
+      assertEqual(window.Lib.normalizeForSearch(undefined), '', 'normalizeForSearch: valor nao-string retorna vazio');
+
+      const videosParaOrdenar = [
+        { id: 'a', titulo: 'A', canal: 'C', adicionado: '2026-01-01' },
+        { id: 'b', titulo: 'B', canal: 'C', adicionado: '2026-03-01' },
+        { id: 'c', titulo: 'C', canal: 'C', adicionado: '2026-02-01' },
+        { id: 'd', titulo: 'D', canal: 'C', adicionado: '2026-03-01' },
+      ];
+      assertEqual(
+        window.Lib.sortVideosByDate(videosParaOrdenar).map(v => v.id),
+        ['b', 'd', 'c', 'a'],
+        'sortVideosByDate: mais recente primeiro, mantem ordem original em empate'
+      );
+
+      const videosParaFiltrar = [
+        { id: '1', titulo: 'Dungeão Final', canal: 'Ally Octans', adicionado: '2026-01-01' },
+        { id: '2', titulo: 'Guia de Classes', canal: 'Outro Canal', adicionado: '2026-01-02' },
+      ];
+      assertEqual(window.Lib.filterVideos(videosParaFiltrar, 'dungeao').map(v => v.id), ['1'], 'filterVideos: busca por titulo ignora acento/caixa');
+      assertEqual(window.Lib.filterVideos(videosParaFiltrar, 'outro canal').map(v => v.id), ['2'], 'filterVideos: busca por canal');
+      assertEqual(window.Lib.filterVideos(videosParaFiltrar, '').length, 2, 'filterVideos: busca vazia retorna todos');
+      assertEqual(window.Lib.filterVideos(videosParaFiltrar, 'inexistente').length, 0, 'filterVideos: sem resultado retorna lista vazia');
+
+      assertEqual(window.Lib.thumbnailUrl('abc123'), 'https://i.ytimg.com/vi/abc123/hqdefault.jpg', 'thumbnailUrl: monta URL da miniatura');
+      assertEqual(window.Lib.embedUrl('abc123'), 'https://www.youtube-nocookie.com/embed/abc123?autoplay=1', 'embedUrl: monta URL do player sem cookies');
+
+      assertEqual(window.Lib.escapeHtml(`<b>&"'`), '&lt;b&gt;&amp;&quot;&#39;', 'escapeHtml: escapa caracteres especiais');
+
+      assertEqual(window.Lib.generateVideosJsSource([]), 'window.VIDEOS = [];\n', 'generateVideosJsSource: lista vazia');
+
+      const videoExemplo = [{ id: 'dQw4w9WgXcQ', titulo: 'Como comecar', canal: 'Ally Octans', adicionado: '2026-01-01' }];
+      const fonteGerada = window.Lib.generateVideosJsSource(videoExemplo);
+      assertEqual(
+        fonteGerada,
+        'window.VIDEOS = [\n  { id: "dQw4w9WgXcQ", titulo: "Como comecar", canal: "Ally Octans", adicionado: "2026-01-01" },\n];\n',
+        'generateVideosJsSource: um video'
+      );
+
+      assertEqual(window.Lib.parseVideosJsSource(''), [], 'parseVideosJsSource: string vazia retorna lista vazia');
+      assertEqual(window.Lib.parseVideosJsSource(fonteGerada), videoExemplo, 'parseVideosJsSource: ida e volta preserva os dados');
+
+      document.getElementById('summary').textContent = `${pass} PASS / ${fail} FAIL`;
+    })();
+  </script>
+</body>
+</html>
