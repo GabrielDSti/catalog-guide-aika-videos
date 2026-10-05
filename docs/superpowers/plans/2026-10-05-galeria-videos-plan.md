@@ -304,7 +304,7 @@ with:
 node -e "globalThis.window = {}; eval(require('fs').readFileSync('assets/lib.js', 'utf8')); const assert = require('assert'); assert.deepStrictEqual(window.Lib.sortVideosByDate([{id:'a',adicionado:'2026-01-01'},{id:'b',adicionado:'2026-03-01'}]).map(v=>v.id), ['b','a']); assert.strictEqual(window.Lib.thumbnailUrl('abc'), 'https://i.ytimg.com/vi/abc/hqdefault.jpg'); assert.strictEqual(window.Lib.escapeHtml('<b>'), '&lt;b&gt;'); console.log('OK');"
 ```
 
-Expected: prints `OK`. Also open `test.html` and confirm `19 PASS / 0 FAIL`.
+Expected: prints `OK`. Also open `test.html` and confirm `18 PASS / 0 FAIL`.
 
 - [ ] **Step 5: Commit**
 
@@ -421,7 +421,7 @@ with:
 node -e "globalThis.window = {}; eval(require('fs').readFileSync('assets/lib.js', 'utf8')); const assert = require('assert'); const src = window.Lib.generateVideosJsSource([{id:'x',titulo:'T',canal:'C',adicionado:'2026-01-01'}]); assert.deepStrictEqual(window.Lib.parseVideosJsSource(src), [{id:'x',titulo:'T',canal:'C',adicionado:'2026-01-01'}]); console.log('OK');"
 ```
 
-Expected: prints `OK`. Also open `test.html` and confirm `23 PASS / 0 FAIL`.
+Expected: prints `OK`. Also open `test.html` and confirm `22 PASS / 0 FAIL`.
 
 - [ ] **Step 5: Commit**
 
@@ -1423,7 +1423,7 @@ Expected: no syntax errors, and the printed list is exactly `extractYouTubeId, n
 
 - [ ] **Step 3: Final manual pass**
 
-- Open `test.html`: confirm the summary reads `23 PASS / 0 FAIL`.
+- Open `test.html`: confirm the summary reads `22 PASS / 0 FAIL`.
 - Open `index.html`: confirm it shows the empty state ("Nenhum vídeo cadastrado ainda. Volte em breve!") — this confirms `assets/videos.js` was left empty as required.
 - Confirm `cat assets/videos.js` (or open it) shows exactly `window.VIDEOS = [];`.
 
