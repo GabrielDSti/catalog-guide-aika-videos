@@ -20,7 +20,7 @@ window.Lib = (() => {
     if (typeof text !== 'string') return '';
     return text
       .normalize('NFD')
-      .replace(/[̀-ͯ]/g, '')
+      .replace(/[\u0300-\u036f]/g, '')
       .toLowerCase()
       .trim();
   }
